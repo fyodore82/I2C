@@ -75,19 +75,19 @@ extern "C" {
 #endif
 
 void i2c_init (unsigned char slaveaddr);
-char i2c_start (char);
-char i2c_stop (char Force);
-char i2c_tx (unsigned char dt, char);
-char i2c_rx (char ack, char *d, char ClkStrRetryTimes);
-char TXbyte (char addrh, char addrl, char data);
-char TXWaitACK (char cyclestowait);
-char RXbyte (char addrH, char addrL, char *d);
-char RX16bytes (char addrH, char addrL, char *d);    // d is 16 bytes array
-char RXNbytes (char addrH, char addrL, char N, char *d);
-char TXNbytes (char addrh, char addrl, char N, char *d);     // TX N bytes, d is N bytes array
+unsigned char i2c_start (char);
+unsigned char i2c_stop (char Force);
+unsigned char i2c_tx (unsigned char dt, unsigned char);
+unsigned char i2c_rx (unsigned char ack, unsigned char *d, unsigned char ClkStrRetryTimes);
+unsigned char TXbyte (unsigned char addrh, unsigned char addrl, unsigned char data);
+unsigned char TXWaitACK ( unsigned char cyclestowait);
+unsigned char RXbyte (unsigned char addrH, unsigned char addrL, unsigned char *d);
+unsigned char RX16bytes (unsigned char addrH, unsigned char addrL, unsigned char *d);    // d is 16 bytes array
+unsigned char RXNbytes (unsigned char addrH, unsigned char addrL, unsigned char N, unsigned char *d);
+unsigned char TXNbytes (unsigned char addrh, unsigned char addrl, unsigned char N, unsigned char *d);     // TX N bytes, d is N bytes array
 
-char TXCmdToPIC16 (char* cmd, char size, char WaitBtwnCmdms);
-char RXfromPIC16 (char *cmd, char size, char WaitBtwnCmdms);
+unsigned char TXCmdToPIC16 (unsigned char* cmd, unsigned char size, unsigned char WaitBtwnCmdms);
+unsigned char RXfromPIC16 (unsigned char *cmd, unsigned char size, unsigned char WaitBtwnCmdms);
 
 
 #ifdef	__cplusplus

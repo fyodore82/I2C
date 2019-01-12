@@ -58,7 +58,7 @@ void i2c_init (unsigned char slaveaddr)
 }
 
 // Stack = 1
-char i2c_start (char force)   //  Start I2C. Return - 0 started, 1 - failed to start:
+unsigned char i2c_start (char force)   //  Start I2C. Return - 0 started, 1 - failed to start:
                         //    - I2C bus busy (multi master)
 {
     if (force || SSPSTATbits.P || !(SSPSTATbits.P || SSPSTATbits.S))  // Ether STOP detected or both START & STOP = 0
@@ -79,7 +79,7 @@ char i2c_start (char force)   //  Start I2C. Return - 0 started, 1 - failed to s
 }
 
 // Stack = 1
-char i2c_stop (char Force)    // STOPS i2c transmission 0 - success
+unsigned char i2c_stop (char Force)    // STOPS i2c transmission 0 - success
 {
     char sttries = I2CSTOPTRYTIMES;
     PIR1bits.SSPIF = 0;
@@ -113,7 +113,7 @@ char i2c_stop (char Force)    // STOPS i2c transmission 0 - success
 }
 
 // Stack = 1
-char i2c_tx (unsigned char dt, char CareAboutAck)
+unsigned char i2c_tx (unsigned char dt, unsigned char CareAboutAck)
 {
 //    SSPBUF = dt;
 //    return 0;
@@ -177,7 +177,7 @@ char i2c_tx (unsigned char dt, char CareAboutAck)
 }
 
 // Stack = 1
-char i2c_rx (char ack, unsigned char *d, unsigned char ClkStrRetryTimes)
+unsigned char i2c_rx (unsigned char ack, unsigned char *d, unsigned char ClkStrRetryTimes)
 {
     unsigned char i, j;
     *d = 0;
@@ -222,7 +222,7 @@ char i2c_rx (char ack, unsigned char *d, unsigned char ClkStrRetryTimes)
 }
 
 // Stack = 2
-char TXbyte (unsigned char addrh, unsigned char addrl, unsigned char data)     // Transmit 1 byte of data
+unsigned char TXbyte (unsigned char addrh, unsigned char addrl, unsigned char data)     // Transmit 1 byte of data
 {
     unsigned char ret = 0;
     unsigned char i = I2CSTOPTRYTIMES;
@@ -263,7 +263,7 @@ char TXbyte (unsigned char addrh, unsigned char addrl, unsigned char data)     /
 }
 
 // Stack = 2
-char TXWaitACK (unsigned char cyclestowait)
+unsigned char TXWaitACK (unsigned char cyclestowait)
 {
     unsigned char ret = 0;
     unsigned char i = I2CSTOPTRYTIMES;
@@ -294,7 +294,7 @@ char TXWaitACK (unsigned char cyclestowait)
 }
 
 // Stack = 2
-char RXbyte (unsigned char addrH, unsigned char addrL, unsigned char *d)
+unsigned char RXbyte (unsigned char addrH, unsigned char addrL, unsigned char *d)
 {
     unsigned char ret = 0;
     unsigned char i = I2CSTOPTRYTIMES;
@@ -345,7 +345,7 @@ char RXbyte (unsigned char addrH, unsigned char addrL, unsigned char *d)
 }
 
 // Stack = 2
-char RX16bytes (unsigned char addrH, unsigned char addrL, unsigned char *d)    // d is 16 bytes array
+unsigned char RX16bytes (unsigned char addrH, unsigned char addrL, unsigned char *d)    // d is 16 bytes array
 {
     unsigned char ret = 0;
     unsigned char i;
@@ -408,7 +408,7 @@ char RX16bytes (unsigned char addrH, unsigned char addrL, unsigned char *d)    /
     return ret;
 }
 
-char RXNbytes (unsigned char addrH, unsigned char addrL, unsigned char N, unsigned char *d)    // d is N bytes array
+unsigned char RXNbytes (unsigned char addrH, unsigned char addrL, unsigned char N, unsigned char *d)    // d is N bytes array
 {
     unsigned char ret = 0;
     unsigned char i;
@@ -473,7 +473,7 @@ char RXNbytes (unsigned char addrH, unsigned char addrL, unsigned char N, unsign
 
 
 // Stack = 2
-char TXNbytes (unsigned char addrh, unsigned char addrl, unsigned char N, unsigned char *d)     // TX N bytes, d is N bytes array
+unsigned char TXNbytes (unsigned char addrh, unsigned char addrl, unsigned char N, unsigned char *d)     // TX N bytes, d is N bytes array
 {
     unsigned char ret = 0;
     unsigned char i, j;
@@ -541,7 +541,7 @@ char TXNbytes (unsigned char addrh, unsigned char addrl, unsigned char N, unsign
 }
 
 
-char TXCmdToPIC16 (unsigned char* cmd, unsigned char size, unsigned char WaitBtwnCmdms)
+unsigned char TXCmdToPIC16 (unsigned char* cmd, unsigned char size, unsigned char WaitBtwnCmdms)
 {
     unsigned char x = 0;
     unsigned char wt = WaitBtwnCmdms;
@@ -571,7 +571,7 @@ char TXCmdToPIC16 (unsigned char* cmd, unsigned char size, unsigned char WaitBtw
 
 }
 
-char RXfromPIC16 (unsigned char *cmd, unsigned char size, unsigned char WaitBtwnCmdms)
+unsigned char RXfromPIC16 (unsigned char *cmd, unsigned char size, unsigned char WaitBtwnCmdms)
 {
     unsigned char d;
     unsigned char wt;
