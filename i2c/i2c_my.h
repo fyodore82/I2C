@@ -66,7 +66,9 @@ extern "C" {
 #define I2CERRTXCOLLIGION   0xB
 #define I2CERRRXSTART   8
 #define I2CERRTXWAITACK 9
-#define I2CERRNOACK     0xC
+#define I2CERRNOACK     0xC     // No ACK bit has been received
+    
+#define I2CERRACKRECEIVED 0xD   // Not an error. It states, that ACK has been received
 
 #define I2CERRSIZEINCORRECT 0x1A
 

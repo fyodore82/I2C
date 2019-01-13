@@ -167,7 +167,7 @@ unsigned char i2c_tx (unsigned char dt, unsigned char CareAboutAck)
     PIR1bits.SSPIF = 0;
     if (CareAboutAck)
     {
-        return (i);
+        return (i == 0 ? I2CERRACKRECEIVED : I2CERRNOACK);  // ACK is when SDA is low
     }
     else
     {
@@ -274,22 +274,20 @@ unsigned char TXWaitACK (unsigned char cyclestowait)
         {
             return (I2CERRSTART);
         }
-        ret = i2c_tx(0b10100000, 0);
+        ret = i2c_tx(0b10100000, 1);    // Care about ack = 1. Ret will be == 0 in case of ACK received
         __delay_us (100);
     }
-    while (cyclestowait-- > 0 && ret > 0);
+    while (cyclestowait-- > 0 && ret != I2CERRACKRECEIVED);
 
     while (i2c_stop(0) && --i > 0)
         __delay_us (I2C_10_STOPSETUPUS);
     if (i == 0)
     {
         i2c_stop(1);
-        if (ret == 0)       //  if ret is zero (we got ACK from tx), then set ret to I2CERRSTOP
-            ret = I2CERRSTOP;
-//        else
-//           ret = I2CERRSTARTBYTE;
+        //if (ret == 0)      
+            return (I2CERRSTOP);  //  if ret is zero (we got ACK from tx), then set ret to I2CERRSTOP
     }
-    return ret;
+    return ret != I2CERRACKRECEIVED ? ret : 0;  // If we finally got ACK, return 0 to indicate success
 
 }
 
@@ -478,6 +476,8 @@ unsigned char TXNbytes (unsigned char addrh, unsigned char addrl, unsigned char 
     unsigned char ret = 0;
     unsigned char i, j;
 
+    startTXNBytes:;
+        
     if (i2c_start (0))      // Cannot start
     {
         return (I2CERRSTART);
@@ -520,23 +520,30 @@ unsigned char TXNbytes (unsigned char addrh, unsigned char addrl, unsigned char 
         ret = I2CERRSTOP;
     }
 
-/*
+
     if (!ret && i != N)
     {
         if ((ret = TXWaitACK (20)))
             return ((ret << 4) | I2CERRTXWAITACK);
 
-
+        d += i;
+        N -= i;
         if (addrl + i == 0x80)
-            ret = TXNbytes (addrh, 0x80, N - i, &d[i]);
+            addrl = 0x80;
+            //ret = TXNbytes (addrh, 0x80, N - i, &d[i]);
         else
-            ret = TXNbytes (addrh + 1, 0x0, N - i, &d[i]);
+        {
+            addrh += 1;
+            addrl = 0x0;
+        }
+            //ret = TXNbytes (addrh + 1, 0x0, N - i, &d[i]);
+        goto startTXNBytes;
 
 
-        if (ret)
-            ret = (ret << 4) | I2CERRTX | 0x08;
+        /*if (ret)
+            ret = (ret << 4) | I2CERRTX | 0x08;*/
     }
-*/
+
     return (ret);
 }
 
