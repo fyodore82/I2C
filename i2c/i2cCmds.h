@@ -20,8 +20,8 @@ extern "C" {
 #define _I2C_ADDRH  0x5
 #define _I2C_ADDRL  0x6
 #define _I2C_UBATT  0x7
-#define _I2C_TENG   0x8
-#define _I2C_PINSTATE   0x9
+#define _I2C_TENG   0x9
+#define _I2C_PINSTATE   0xA
 #define _I2C_BINST      0x1A
 #define _I2C_ENGST      0x1B
 #define _I2C_INTSVCSYNC 0x1C
@@ -42,8 +42,9 @@ extern "C" {
 #define _I2C_DI210      0x2B
 #define _I2C_DI1416     0x2C
 #define _I2C_DO1819     0x2D
-#define _I2C_UTRHLD     0x2E
-#define _I2C_TTRHLD     0x2F
+#define _I2C_UTRHLD     0x2E    // Min voltage to start eng  ((ADRESH << 7) | (ADRESL >> 1)
+#define _I2C_UTRHLD_LOW 0x2F    // Min low voltage to start eng (ADRESL << 1))
+#define _I2C_TTRHLD     0x30
 #define _I2C_CMDREBOOT  0x31
 #define _I2C_EEPROMRW   0x32
 #define _I2C_HOLDTMR    0x33    // Hold all timers for some time

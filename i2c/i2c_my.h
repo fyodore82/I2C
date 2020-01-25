@@ -37,6 +37,8 @@ extern "C" {
 #define I2CBUSYME 2  // Set busy by me
 #define I2CFREE  3   // 2 - Free
 */
+    
+#if defined(__16F690)
 #define I2C_7_STARTSETUPUS 6       // 90 in P16F690 spec, (7) Start condition setup time (when SDA and SCL are high), 4700 ns min
 #define I2C_6_STARTHOLDUS  5       // 91, (6) Start condition hold time (when SDA = 0, SCL = 1), 4000 ns min
 
@@ -53,6 +55,27 @@ extern "C" {
 #define I2CSTOPTRYTIMES 3
 
 #define I2CCLOCKSTRTMS  200       // Clock stretch times we wait
+    
+#elif defined(__18F4550)
+    
+#define I2C_7_STARTSETUPUS 8       // 90 in P16F690 spec, (7) Start condition setup time (when SDA and SCL are high), 4700 ns min
+#define I2C_6_STARTHOLDUS  7       // 91, (6) Start condition hold time (when SDA = 0, SCL = 1), 4000 ns min
+
+#define I2C_8_DATAHOLDUS 3         // 106, (8) Data input hold time (SCL = 0, SDA - not set), 0 ns min
+#define I2C_9_DATASETUPUS  3       // 107, (9) Data input setup time (SDA = <data>, SCL = 0), 250 ns min
+
+#define I2C_2_CLOCKHIGHUS  7       // 100, (2) Clock high for SCL for 100 kHz transfer rate, 4000 us min
+#define I2C_3_CLOCKLOWUS   8       // 101, (3) Clock low time (SCL = 0), 4700 us min
+
+#define I2C_10_STOPSETUPUS  7       // 92, (10) Stop condition setup time (SDA = 0, SCL = 1), 4000 ns
+
+#define I2C_BUSFREETIMEUS   7       // 110, Bus free time (SCL = SDA = 1), 4700 ns min
+
+#define I2CSTOPTRYTIMES 3
+
+#define I2CCLOCKSTRTMS  200       // Clock stretch times we wait
+#endif
+// ------------------------------------------------    
 
 #define I2CERRSTART    1    // I2C error on Start
 #define I2CERRSTOP     2
